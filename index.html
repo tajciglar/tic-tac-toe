@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe Project</title>
     <link rel="stylesheet" href="style.css">
-    <script href="script.js"></script>
 </head>
 <body>
     <div id="container">
-        
-        <div id="names">
-            <div class="input-container">
-                <label for="firstName">Enter first player name:</label>
-                <input type="text" name="firstName" id="firstName">
-            </div>
-            <div class="input-container">
-                <label for="secondName">Enter second player name:</label>
-                <input type="text" name="secondName" id="secondName">
-            </div>
-        </div>
-        <div id="submitNames">
-            <button type="submit">Submit player names</button>
-        </div>
+        <div class="form">
+            <form id="namesForm">
+                <div id="names">
+                    <div class="input-container">
+                        <label for="firstName">Enter first player name:</label>
+                        <input type="text" name="firstName" id="firstName">
+                    </div>
+                    <div class="input-container">
+                        <label for="secondName">Enter second player name:</label>
+                        <input type="text" name="secondName" id="secondName">
+                    </div>
+                </div>
+                <div id="submitNames">
+                    <input type="submit" value="Submit player names"></input>
+                </div>
+            </form>
+        </div> 
     </div>
-    <div id="gameboard">
-        
-    </div>
+    <script src="script.js"></script>
 </body>
 </html>

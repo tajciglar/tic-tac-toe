@@ -32,6 +32,7 @@ html, body{
     width: 300px;
     height: 40px;
     font-size: 30px;
+    text-align: center;
 }
 
 #submitNames{
@@ -39,7 +40,7 @@ html, body{
     justify-content: center;
 }
 
-#submitNames button{
+#submitNames input{
     width:400px;
     font-size: 30px;
 }
