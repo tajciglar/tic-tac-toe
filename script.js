@@ -21,9 +21,8 @@ const gameModule = (function() {
         const secondNameValue = secondNameInput.value;
 
         // create players
-        player1 = createPlayer(firstNameValue, "x", true)
+        player1 = createPlayer(firstNameValue, "X", true)
         player2 = createPlayer(secondNameValue, "O", false);
-        console.log(player1.turn);
         showGameBoard();
     });
 
@@ -37,6 +36,7 @@ const gameModule = (function() {
     function showGameBoard () {
         const container = document.getElementById("container");
         container.style.display = "flex";
+        container.style.flexFlow = "column";
         container.style.justifyContent = "center";
         container.style.alignItems = "center";
 
@@ -60,7 +60,7 @@ const gameModule = (function() {
             for (let col = 0; col < 3; col++, i++) {
                 const cell = document.createElement("div");
                 cell.classList.add(`cell`);
-                cell.setAttribute("data-id", i);
+                cell.setAttribute("data-id", i); 
                 cell.style.border = "1px solid black";
                 cell.style.fontSize = "150px";
                 cell.style.textAlign = "center";
@@ -79,34 +79,71 @@ const gameModule = (function() {
         const container = document.getElementById("container");
         const instructionHolder = document.createElement("div");
         const instruction = document.createElement("p");
+        instruction.style.fontSize = "25px";
+        instruction.style.fontWeight = "bold";
+        
 
-        instruction.textContent = `It is ${player1.name}'s turn`;
+        instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
 
         container.appendChild(instructionHolder);
         instructionHolder.appendChild(instruction);
         // Select all cells within the board
         const cells = board.querySelectorAll(".cell");
-    
+        
         // Add a click event listener to each cell
         cells.forEach((cell) => {
             cell.addEventListener("click", () => {
-                let clickCounter = 0;
-                if (player1.turn){
-                    cell.textContent = player1.marker;
-                    instruction.textContent = `It is ${player2.name}'s turn`;
-                    player1.turn = false;
-                    player2.turn = true;
-                } else {
-                    cell.textContent = player2.marker;
-                    instruction.textContent = `It is ${player1.name}'s turn`;
-                    player1.turn = true;
-                    player2.turn = false;
-                }
+                if (!gameBoard[cell.dataset.id]) { // Check if the cell is empty
+                    if (player1.turn) {
+                        gameBoard[cell.dataset.id] = player1.marker;
+                        cell.textContent = player1.marker;
+                        instruction.textContent = `It is ${player2.name}'s turn! (Marker: ${player2.marker})`;
+                        player1.turn = false;
+                        player2.turn = true;
+                        if(checkForWin(gameBoard, player1.marker))
+                        {
+                            setTimeout(function () {
+                                alert(`${player1.name} wins!`);
+                            }, 100);
+                        }                    
+                    } else {
+                        gameBoard[cell.dataset.id] = player2.marker;
+                        cell.textContent = player2.marker;
+                        instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
+                        player1.turn = true;
+                        player2.turn = false;
+                        if(checkForWin(gameBoard, player2.marker))
+                        {   
+                            setTimeout(function () {
+                                alert(`${player2.name} wins!`);
+                            }, 100);
+                        }                    
+                    }
+                } 
             });
         });
+        
+        function checkForWin(board, marker) {
+            console.log(board, marker);
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6]             // Diagonals
+            ];
+            
+
+            for (const combinations of winningCombinations) {
+                const [a, b, c] = combinations;
+                console.log(combinations)
+                if (board[a] === marker && board[b] === marker && board[c] === marker)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
-
 })();
 
 
