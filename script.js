@@ -23,6 +23,8 @@ const gameModule = (function() {
         // create players
         player1 = createPlayer(firstNameValue, "X", true)
         player2 = createPlayer(secondNameValue, "O", false);
+        const form = document.querySelector(".form");
+        form.remove();
         showGameBoard();
     });
 
@@ -39,9 +41,6 @@ const gameModule = (function() {
         container.style.flexFlow = "column";
         container.style.justifyContent = "center";
         container.style.alignItems = "center";
-
-        const form = document.querySelector(".form");
-        form.remove();
 
         const board = document.createElement("div");
         board.setAttribute("id", "gameBoard");
@@ -81,14 +80,35 @@ const gameModule = (function() {
         const instruction = document.createElement("p");
         instruction.style.fontSize = "25px";
         instruction.style.fontWeight = "bold";
-        
 
         instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
-
         container.appendChild(instructionHolder);
         instructionHolder.appendChild(instruction);
+
+
+        // Create a reset button 
+        const resetHolder = document.createElement("div");
+        container.appendChild(resetHolder);
+
+        const reset = document.createElement("button");
+        reset.setAttribute("type", "reset");
+        reset.setAttribute("value", "reset");
+        reset.style.textAlign = "center";
+        reset.textContent = "Reset game board";
+        resetHolder.appendChild(reset);
+
         // Select all cells within the board
         const cells = board.querySelectorAll(".cell");
+
+        reset.addEventListener("click", () => {
+            cells.forEach((cell) => {
+                cell.textContent = "";
+                gameBoard = new Array(9);
+                instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
+            });
+        });
+
+        
         
         // Add a click event listener to each cell
         cells.forEach((cell) => {
@@ -105,6 +125,16 @@ const gameModule = (function() {
                             setTimeout(function () {
                                 alert(`${player1.name} wins!`);
                             }, 100);
+                            setTimeout(function () {
+                                cells.forEach((cell) => {
+                                    cell.textContent = "";
+                                    gameBoard = new Array(9);
+                                    instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
+                                });
+                            }, 200);
+                            
+
+                            
                         }                    
                     } else {
                         gameBoard[cell.dataset.id] = player2.marker;
@@ -117,6 +147,13 @@ const gameModule = (function() {
                             setTimeout(function () {
                                 alert(`${player2.name} wins!`);
                             }, 100);
+                            setTimeout(function () {
+                                cells.forEach((cell) => {
+                                    cell.textContent = "";
+                                    gameBoard = new Array(9);
+                                    instruction.textContent = `It is ${player1.name}'s turn! (Marker: ${player1.marker})`;
+                                });
+                            }, 200);
                         }                    
                     }
                 } 
